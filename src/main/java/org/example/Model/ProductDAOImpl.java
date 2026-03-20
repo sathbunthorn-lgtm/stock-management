@@ -103,7 +103,7 @@ public class ProductDAOImpl implements ProductDAO {
     @Override
     public List<Product> searchByName(String name) {
         List<Product> products = new ArrayList<>();
-        String query = "SELECT * FROM product WHERE LOWER(name) LIKE LOWER(?)";
+        String query = "SELECT * FROM products WHERE LOWER(name) LIKE LOWER(?)";
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, "%" + name + "%");

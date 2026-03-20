@@ -13,11 +13,13 @@ public class Controller {
     private final ProductDAO productDAO;
     private final ProductView view;
     private final PaginationController pagination;
+    private final BackupControl backupControl;
 
     public Controller(ProductDAO productDAO, ProductView view) {
         this.productDAO = productDAO;
         this.view = view;
         this.pagination = new PaginationController(productDAO, view);
+        this.backupControl = new BackupControl(productDAO, view);
     }
 
     // ─── Display ──────────────────────────────────────────────────────────────
@@ -125,4 +127,8 @@ public class Controller {
     public void setNumberofdisplayedProducts(int size) {
         pagination.setPageSize(size);
     }
+    public void backup() {
+        backupControl.backup();
+    }
+
 }

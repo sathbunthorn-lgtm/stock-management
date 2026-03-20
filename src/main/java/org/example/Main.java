@@ -1,6 +1,5 @@
 package org.example;
 
-
 import org.example.View.ProductView;
 
 public class Main {

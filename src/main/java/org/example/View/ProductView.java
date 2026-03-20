@@ -15,7 +15,7 @@ public class ProductView {
             System.out.println("════════════════════════════════════════════════════════════");
             System.out.println("  N. Next    P. Previous    F. First    L. Last    G. Go to");
             System.out.println("  W. Write   R. Read        U. Update   D. Delete          ");
-            System.out.println("  S. Search  Se. Set Rows   E. Exit                        ");
+            System.out.println("  S. Search  Se. Set Rows   E. Exit     Ba. Backup               ");
             System.out.println("════════════════════════════════════════════════════════════");
             System.out.print("Enter choice: ");
 
@@ -36,8 +36,17 @@ public class ProductView {
                         System.out.print("Enter product quantity: ");
                         int qty = Integer.parseInt(scanner.nextLine().trim());
 
-                        controller.addProduct(id, name, price, qty);
-                        controller.displayProductslist();
+                        System.out.print("Enter 'Sa' to save or 'Un' to cancel: ");
+                        String confirm = scanner.nextLine().trim().toLowerCase();
+
+                        if (confirm.equals("sa")) {
+                            controller.addProduct(id, name, price, qty);
+                            controller.displayProductslist();
+                        } else if (confirm.equals("un")) {
+                            showMessage("Cancelled. Product not saved.");
+                        } else {
+                            showMessage("Invalid choice. Product not saved.");
+                        }
                     } catch (NumberFormatException e) {
                         System.out.println("Invalid input. Please enter a valid number.");
                     }
@@ -65,8 +74,17 @@ public class ProductView {
                         System.out.print("Enter new quantity: ");
                         int qty = Integer.parseInt(scanner.nextLine().trim());
 
-                        controller.updateProduct(id, name, price, qty);
-                        controller.displayProductslist();
+                        System.out.print("Enter 'Uu' to save update or 'Un' to cancel: ");
+                        String confirm = scanner.nextLine().trim().toLowerCase();
+
+                        if (confirm.equals("Sa")) {
+                            controller.updateProduct(id, name, price, qty);
+                            controller.displayProductslist();
+                        } else if (confirm.equals("un")) {
+                            showMessage("Cancelled. Product not updated.");
+                        } else {
+                            showMessage("Invalid choice. Product not updated.");
+                        }
                     } catch (NumberFormatException e) {
                         System.out.println("Invalid input. Please enter a valid number.");
                     }
@@ -111,6 +129,9 @@ public class ProductView {
                 case "e" -> {
                     System.out.println("Goodbye!");
                     return;
+                }
+                case "ba" -> {
+                    controller.backup();
                 }
                 default -> System.out.println("Invalid choice. Please try again.");
             }
