@@ -22,15 +22,21 @@ public class Controller {
         this.backupControl = new BackupControl(productDAO, view);
     }
 
+    public int getNextId() {
+        List<Product> all = productDAO.getAllProduct();
+        if (all.isEmpty()) return 1;
+        return all.stream().mapToInt(Product::getId).max().getAsInt() + 1;
+    }
+
     // ─── Display ──────────────────────────────────────────────────────────────
     public void displayProductslist() {
         pagination.displayPage();
     }
 
     // ─── Add ──────────────────────────────────────────────────────────────────
-    public void addProduct(int id, String name, double price, int stock_qty) {
-        if (Validate.validate(id, name, price, stock_qty)) {
-            productDAO.addProduct(new Product(id, name, price, stock_qty, null));
+    public void addProduct(String name, double price, int stock_qty) {
+        if (Validate.validate(name, price, stock_qty)) {
+            productDAO.addProduct(new Product(0, name, price, stock_qty, null));
             view.showMessage("Product added successfully.");
         } else {
             view.showMessage("Invalid input product detail.");
@@ -61,13 +67,14 @@ public class Controller {
     }
 
     // ─── Update ───────────────────────────────────────────────────────────────
+    // ─── Update ───────────────────────────────────────────────────────────────
     public void updateProduct(int id, String name, double price, int stock_qty) {
         Product existing = productDAO.getProductById(id);
         if (existing == null) {
             view.showMessage("Product not found with ID: " + id);
             return;
         }
-        if (Validate.validate(id, name, price, stock_qty)) {
+        if (Validate.validate(name, price, stock_qty)) {  // remove id here
             productDAO.updateProduct(new Product(id, name, price, stock_qty, existing.getImported_date()));
             view.showMessage("Product updated successfully.");
         } else {

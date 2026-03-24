@@ -8,19 +8,18 @@ public class ProductDAOImpl implements ProductDAO {
 
     @Override
     public void addProduct(Product product) {
-        String query = "INSERT INTO products (id, name, unit_price, stock_qty) VALUES (?, ?, ?, ?)";
+        // Do NOT include id in the query — let SERIAL generate it
+        String query = "INSERT INTO products (name, unit_price, stock_qty) VALUES (?, ?, ?)";
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setInt(1, product.getId());
-            pstmt.setString(2, product.getName());
-            pstmt.setDouble(3, product.getPrice());
-            pstmt.setInt(4, product.getStock_qty());
+            pstmt.setString(1, product.getName());
+            pstmt.setDouble(2, product.getPrice());
+            pstmt.setInt(3, product.getStock_qty());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error adding product: " + e.getMessage());
         }
     }
-
     @Override
     public List<Product> getAllProduct() {
         List<Product> products = new ArrayList<>();
